@@ -6,7 +6,6 @@ async function startLive(instance, browser) {
     console.log(`[${instance}]`, "Starting live ✨");
     const page = await browser.newPage().catch(e => console.error(e.message));
     const url = "https://www.youtube.com/watch?v=EMFGkUjHjd4";
-    const test = "https://youtu.be/IjLnsOWvnZw";
     await page
       .goto(url, { waitUntil: "networkidle2", timeout: 600000 })
       .catch(e => console.error(e.message));
