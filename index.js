@@ -5,15 +5,11 @@ async function startLive(instance, browser) {
   setTimeout(async () => {
     console.log(`[${instance}]`, "Starting live ✨");
     const page = await browser.newPage();
-    console.log(`[${instance}]`, "Page opened");
-
     const url = "https://www.youtube.com/watch?v=EMFGkUjHjd4";
-
-    console.log(`[${instance}]`, "Opening video");
     await page.goto(url, { waitUntil: "networkidle2" });
     console.log(`[${instance}]`, "Video loaded");
-    await page.waitFor(".ytp-button");
-    await page.waitFor(10000);
+    //await page.waitFor(".ytp-button");
+    await page.waitFor(2000);
     console.log(`[${instance}]`, "Click on play button");
     page.keyboard.down("K");
     console.log(`[${instance}]`, "Button clicked");
@@ -22,10 +18,10 @@ async function startLive(instance, browser) {
     await page.screenshot({
       path: `screenshots/live-${instance}.png`
     });
-    await page.waitFor(1000);
+    //await page.waitFor(1000);
     console.log(`[${instance}]`, "Closing browser");
     await browser.close();
-  }, (instance - 1) * 5000);
+  }, (instance - 1) * 300);
 }
 
 async function test() {
@@ -51,4 +47,4 @@ async function goLive(number) {
 }
 
 //test();
-goLive(30);
+goLive(40);
