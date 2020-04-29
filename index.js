@@ -6,23 +6,21 @@ async function startLive(instance, browser) {
     console.log(`[${instance}]`, "Starting live ✨");
     const page = await browser.newPage().catch(e => console.error(e.message));
     const url = "https://www.youtube.com/watch?v=EMFGkUjHjd4";
+    const test = "https://youtu.be/IjLnsOWvnZw";
     await page
       .goto(url, { waitUntil: "networkidle2", timeout: 600000 })
       .catch(e => console.error(e.message));
     console.log(`[${instance}]`, "Video loaded");
-    //await page.waitFor(".ytp-button");
-    await page.waitFor(2000).catch(e => console.error(e.message));
-    console.log(`[${instance}]`, "Click on play button");
-    page.keyboard.down("K").catch(e => console.error(e.message));
-    console.log(`[${instance}]`, "Button clicked");
-    await page.waitFor(90000).catch(e => console.error(e.message));
-    console.log(`[${instance}]`, "Debug screenshot");
+    await page.waitFor(".ytp-button");
     await page
       .screenshot({
         path: `screenshots/live-${instance}.png`
       })
       .catch(e => console.error(e.message));
-    //await page.waitFor(1000);
+    //await page.waitFor(10000).catch(e => console.error(e.message));
+    console.log(`[${instance}]`, "Click on play button");
+    page.keyboard.down("K").catch(e => console.error(e.message));
+    await page.waitFor(90000).catch(e => console.error(e.message));
     console.log(`[${instance}]`, "Closing browser");
     await browser.close().catch(e => console.error(e.message));
   }, (instance - 1) * 300);
@@ -43,8 +41,10 @@ async function test() {
 async function goLive(number) {
   const browserLive = await puppeteer
     .launch({
-      //headless: false,
-      //defaultViewport: null
+      headless: true,
+      executablePath:
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      //defaultViewport: null,
       args: ["--no-sandbox"]
     })
     .catch(e => console.error(e.message));
