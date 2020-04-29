@@ -7,7 +7,7 @@ async function startLive(instance, browser) {
     const page = await browser.newPage().catch(e => console.error(e.message));
     const url = "https://www.youtube.com/watch?v=EMFGkUjHjd4";
     await page
-      .goto(url, { waitUntil: "networkidle2", timeout: 60000 })
+      .goto(url, { waitUntil: "networkidle2", timeout: 600000 })
       .catch(e => console.error(e.message));
     console.log(`[${instance}]`, "Video loaded");
     //await page.waitFor(".ytp-button");
@@ -43,7 +43,7 @@ async function test() {
 async function goLive(number) {
   const browserLive = await puppeteer
     .launch({
-      headless: false,
+      //headless: false,
       //defaultViewport: null
       args: ["--no-sandbox"]
     })
