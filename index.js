@@ -54,4 +54,4 @@ async function goLive(number) {
 }
 
 //test();
-goLive(10);
+goLive(30);
