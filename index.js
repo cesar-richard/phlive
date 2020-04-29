@@ -40,6 +40,7 @@ async function goLive(number) {
   const browserLive = await puppeteer.launch({
     //headless: false
     //defaultViewport: null
+    args: ["--no-sandbox"]
   });
   for (var i = 1; i <= number; i++) {
     startLive(i, browserLive).catch(err => {});
