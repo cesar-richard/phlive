@@ -1,34 +1,31 @@
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
-async function startLive(instance) {
-  console.log(`[${instance}]`, "Starting live ✨");
-  const browser = await puppeteer.launch({
-    //headless: false
-    //defaultViewport: null
-  });
+async function startLive(instance, browser) {
+  setTimeout(async () => {
+    console.log(`[${instance}]`, "Starting live ✨");
+    const page = await browser.newPage();
+    console.log(`[${instance}]`, "Page opened");
 
-  const page = await browser.newPage();
-  console.log(`[${instance}]`, "Browser opened");
+    const url = "https://www.youtube.com/watch?v=EMFGkUjHjd4";
 
-  const url = "https://www.youtube.com/watch?v=aRXzW-o-zqs";
-
-  console.log(`[${instance}]`, "Opening video");
-  await page.goto(url, { waitUntil: "networkidle2" });
-
-  await page.waitFor(".ytp-button");
-  await page.waitFor(3000);
-  console.log(`[${instance}]`, "Click on play button");
-  page.keyboard.down("K");
-  await page.waitFor(3000);
-  console.log(`[${instance}]`, "Debug screenshot");
-  await page.screenshot({
-    path: `screenshots/live-${instance}.png`,
-    fullPage: true
-  });
-  await page.waitFor(1000);
-  console.log(`[${instance}]`, "Closing browser");
-  await browser.close();
+    console.log(`[${instance}]`, "Opening video");
+    await page.goto(url, { waitUntil: "networkidle2" });
+    console.log(`[${instance}]`, "Video loaded");
+    await page.waitFor(".ytp-button");
+    await page.waitFor(10000);
+    console.log(`[${instance}]`, "Click on play button");
+    page.keyboard.down("K");
+    console.log(`[${instance}]`, "Button clicked");
+    await page.waitFor(90000);
+    console.log(`[${instance}]`, "Debug screenshot");
+    await page.screenshot({
+      path: `screenshots/live-${instance}.png`
+    });
+    await page.waitFor(1000);
+    console.log(`[${instance}]`, "Closing browser");
+    await browser.close();
+  }, (instance - 1) * 5000);
 }
 
 async function test() {
@@ -42,8 +39,16 @@ async function test() {
     console.log(`All done, check the screenshot. ✨`);
   });
 }
-test();
 
-for (var i = 1; i <= 20; i++) {
-  startLive(i);
+async function goLive(number) {
+  const browserLive = await puppeteer.launch({
+    //headless: false
+    //defaultViewport: null
+  });
+  for (var i = 1; i <= number; i++) {
+    startLive(i, browserLive).catch(err => {});
+  }
 }
+
+//test();
+goLive(30);
