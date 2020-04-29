@@ -4,23 +4,27 @@ puppeteer.use(StealthPlugin());
 async function startLive(instance, browser) {
   setTimeout(async () => {
     console.log(`[${instance}]`, "Starting live ✨");
-    const page = await browser.newPage();
+    const page = await browser.newPage().catch(e => console.error(e.message));
     const url = "https://www.youtube.com/watch?v=EMFGkUjHjd4";
-    await page.goto(url, { waitUntil: "networkidle2" });
+    await page
+      .goto(url, { waitUntil: "networkidle2", timeout: 60000 })
+      .catch(e => console.error(e.message));
     console.log(`[${instance}]`, "Video loaded");
     //await page.waitFor(".ytp-button");
-    await page.waitFor(2000);
+    await page.waitFor(2000).catch(e => console.error(e.message));
     console.log(`[${instance}]`, "Click on play button");
-    page.keyboard.down("K");
+    page.keyboard.down("K").catch(e => console.error(e.message));
     console.log(`[${instance}]`, "Button clicked");
-    await page.waitFor(90000);
+    await page.waitFor(90000).catch(e => console.error(e.message));
     console.log(`[${instance}]`, "Debug screenshot");
-    await page.screenshot({
-      path: `screenshots/live-${instance}.png`
-    });
+    await page
+      .screenshot({
+        path: `screenshots/live-${instance}.png`
+      })
+      .catch(e => console.error(e.message));
     //await page.waitFor(1000);
     console.log(`[${instance}]`, "Closing browser");
-    await browser.close();
+    await browser.close().catch(e => console.error(e.message));
   }, (instance - 1) * 300);
 }
 
@@ -37,15 +41,17 @@ async function test() {
 }
 
 async function goLive(number) {
-  const browserLive = await puppeteer.launch({
-    //headless: false
-    //defaultViewport: null
-    args: ["--no-sandbox"]
-  });
+  const browserLive = await puppeteer
+    .launch({
+      headless: false,
+      //defaultViewport: null
+      args: ["--no-sandbox"]
+    })
+    .catch(e => console.error(e.message));
   for (var i = 1; i <= number; i++) {
-    startLive(i, browserLive).catch(err => {});
+    startLive(i, browserLive).catch(e => console.error(e.message));
   }
 }
 
 //test();
-goLive(40);
+goLive(10);
