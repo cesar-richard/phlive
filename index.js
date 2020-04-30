@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
-const number = 5;
+const number = 50;
 let c = 0;
 async function startLive(browser, instance) {
   setTimeout(async () => {
@@ -20,15 +20,21 @@ async function startLive(browser, instance) {
     await page
       .waitFor(3000)
       .catch(e => console.error(`[${instance}]`, e.message));
-    // page.keyboard
-    //   .down("K")
-    //   .catch(e => console.error(`[${instance}]`, e.message));
+      await page
+        .screenshot({
+          path: `screenshots/live-${instance}-1.png`
+        })
+        .catch(e => console.error(`[${instance}]`, e.message));
+    page.keyboard
+      .down("K")
+      .catch(e => console.error(`[${instance}]`, e.message));
     await page
       .waitFor(3000)
       .catch(e => console.error(`[${instance}]`, e.message));
     await page
       .screenshot({
-        path: `screenshots/live-${instance}.png`
+        path: `screenshots/live-${instance}-2.png`,
+        fullPage : true
       })
       .catch(e => console.error(`[${instance}]`, e.message));
     await page
@@ -36,7 +42,7 @@ async function startLive(browser, instance) {
       .catch(e => console.error(`[${instance}]`, e.message));
 
     c++;
-    if (c == number) {
+    if (c == number || true) {
       console.log(`[${instance}]`, "Closing browser");
       await browser
         .close()
@@ -61,18 +67,28 @@ async function test() {
 }
 
 async function goLive(number) {
-  const browserLive = await puppeteer
-    .launch({
-      headless: false,
-      executablePath:
-        //"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-      //defaultViewport: null,
-      //args: ["--no-sandbox"]
-    })
-    .catch(e => console.error(`[${number}]`, e.message));
+  // const browserLive = await puppeteer
+  //   .launch({
+  //     headless: false,
+  //     executablePath:
+  //       "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+  //       //"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  //     //defaultViewport: null,
+  //     //args: ["--no-sandbox"]
+  //   })
+  //   .catch(e => console.error(`[${number}]`, e.message));
   for (var i = 1; i <= number; i++) {
-    startLive(browserLive, i).catch(e =>
+    const browseri = await puppeteer
+      .launch({
+        headless: true,
+        executablePath:
+          "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+          //"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        //defaultViewport: null,
+        //args: ["--no-sandbox"]
+      })
+      .catch(e => console.error(`[${number}]`, e.message));
+    startLive(browseri, i).catch(e =>
       console.error(`[${instance}]`, e.message)
     );
   }
