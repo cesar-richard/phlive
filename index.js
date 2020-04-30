@@ -1,6 +1,8 @@
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
+const number =5;
+let c = 0;
 async function startLive(browser, instance) {
   setTimeout(async () => {
     console.log(`[${instance}]`, "Starting live ✨");
@@ -18,9 +20,9 @@ async function startLive(browser, instance) {
     await page
       .waitFor(3000)
       .catch(e => console.error(`[${instance}]`, e.message));
-    page.keyboard
-      .down("K")
-      .catch(e => console.error(`[${instance}]`, e.message));
+    // page.keyboard
+    //   .down("K")
+    //   .catch(e => console.error(`[${instance}]`, e.message));
     await page
       .waitFor(3000)
       .catch(e => console.error(`[${instance}]`, e.message));
@@ -30,11 +32,18 @@ async function startLive(browser, instance) {
       })
       .catch(e => console.error(`[${instance}]`, e.message));
     await page
-      .waitFor(30000)
+      .waitFor(130000)
       .catch(e => console.error(`[${instance}]`, e.message));
-    console.log(`[${instance}]`, "Closing browser");
-    await browser.close().catch(e => console.error(`[${instance}]`, e.message));
-  }, (instance - 1) * 3000);
+    
+    c++;
+    if(c==number){
+      console.log(`[${instance}]`, "Closing browser");
+      await browser.close().catch(e => console.error(`[${instance}]`, e.message));
+    }else{
+      console.log(`[${instance}]`, "Closing page");
+      await page.close().catch(e => console.error(`[${instance}]`, e.message));
+    }
+  }, (instance - 1) * 300);
 }
 
 async function test() {
@@ -52,13 +61,13 @@ async function test() {
 async function goLive(number) {
   const browserLive = await puppeteer
     .launch({
-      headless: true,
+      headless: false,
       executablePath:
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
       //defaultViewport: null,
-      args: ["--no-sandbox"]
+      //args: ["--no-sandbox"]
     })
-    .catch(e => console.error(`[${instance}]`, e.message));
+    .catch(e => console.error(`[${number}]`, e.message));
   for (var i = 1; i <= number; i++) {
     startLive(browserLive, i).catch(e =>
       console.error(`[${instance}]`, e.message)
@@ -66,5 +75,5 @@ async function goLive(number) {
   }
 }
 
-//test();
-goLive(20);
+test();
+goLive(number);
