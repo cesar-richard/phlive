@@ -13,7 +13,7 @@ async function startLive(browser, instance) {
     await page
       .goto(url, { waitUntil: "networkidle2", timeout: 60000 })
       .catch(e => console.error(`[${instance}]`, e.message));
-  //  console.log(`[${instance}]`, "Video loaded");
+    //  console.log(`[${instance}]`, "Video loaded");
     await page.waitFor(".ytp-button");
     //await page.waitFor(10000).catch(e => console.error(`[${instance}]`, e.message));
     //console.log(`[${instance}]`, "Click on play button");
@@ -36,12 +36,12 @@ async function startLive(browser, instance) {
         path: `screenshots/live-${instance}-2.png`
       })
       .catch(e => console.error(`[${instance}]`, e.message));
-    const inter = setInterval(async function () {
-      const vc = await page.$('.view-count');
-      const svc = await page.$('.short-view-count');
-      const vct = await page.evaluate(e=> e.textContent, vc);
-      const svct = await page.evaluate(e=> e.textContent, svc);
-      console.info(`[${instance}]`, `${vct} - (${svct})`)
+    const inter = setInterval(async function() {
+      const vc = await page.$(".view-count");
+      const svc = await page.$(".short-view-count");
+      const vct = await page.evaluate(e => e.textContent, vc);
+      const svct = await page.evaluate(e => e.textContent, svc);
+      console.info(`[${instance}]`, `${vct} - (${svct})`);
     }, 2000);
     await page
       .waitFor(130000)
@@ -61,16 +61,21 @@ async function startLive(browser, instance) {
 }
 
 async function test() {
-  puppeteer.launch({ headless: true,executablePath:
-    "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe" }).then(async browser => {
-    console.log("Running tests..");
-    const page = await browser.newPage();
-    await page.goto("https://bot.sannysoft.com");
-    await page.waitFor(5000);
-    await page.screenshot({ path: "testresult.png", fullPage: true });
-    await browser.close();
-    console.log(`All done, check the screenshot. ✨`);
-  });
+  puppeteer
+    .launch({
+      headless: true,
+      executablePath:
+        "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+    })
+    .then(async browser => {
+      console.log("Running tests..");
+      const page = await browser.newPage();
+      await page.goto("https://bot.sannysoft.com");
+      await page.waitFor(5000);
+      await page.screenshot({ path: "testresult.png", fullPage: true });
+      await browser.close();
+      console.log(`All done, check the screenshot. ✨`);
+    });
 }
 
 async function goLive(number) {
@@ -89,10 +94,10 @@ async function goLive(number) {
       .launch({
         headless: true,
         defaultViewport: null,
-        //executablePath:
-          //"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-          //"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        args: ["--no-sandbox"]
+        args: ["--no-sandbox"],
+        executablePath:
+          //  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+          "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
       })
       .catch(e => console.error(`[${number}]`, e.message));
     startLive(browseri, i).catch(e =>
