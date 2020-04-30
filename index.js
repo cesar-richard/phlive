@@ -88,11 +88,11 @@ async function goLive(number) {
     const browseri = await puppeteer
       .launch({
         headless: true,
-        executablePath:
-          "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-        //"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
         defaultViewport: null,
-        //args: ["--no-sandbox"]
+        //executablePath:
+          //"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+          //"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        args: ["--no-sandbox"]
       })
       .catch(e => console.error(`[${number}]`, e.message));
     startLive(browseri, i).catch(e =>
