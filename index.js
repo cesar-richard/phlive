@@ -5,7 +5,7 @@ async function startLive(instance, browser) {
   setTimeout(async () => {
     console.log(`[${instance}]`, "Starting live ✨");
     const page = await browser.newPage().catch(e => console.error(e.message));
-    const url = "https://www.youtube.com/watch?v=EMFGkUjHjd4";
+    const url = "https://youtu.be/hjG_IGn5B_8";
     await page
       .goto(url, { waitUntil: "networkidle2", timeout: 600000 })
       .catch(e => console.error(e.message));
@@ -40,7 +40,7 @@ async function test() {
 async function goLive(number) {
   const browserLive = await puppeteer
     .launch({
-      headless: true,
+      headless: false,
       executablePath:
         "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
       //defaultViewport: null,
@@ -53,4 +53,4 @@ async function goLive(number) {
 }
 
 //test();
-goLive(30);
+goLive(3);
