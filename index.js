@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
-const number =5;
+const number = 5;
 let c = 0;
 async function startLive(browser, instance) {
   setTimeout(async () => {
@@ -34,12 +34,14 @@ async function startLive(browser, instance) {
     await page
       .waitFor(130000)
       .catch(e => console.error(`[${instance}]`, e.message));
-    
+
     c++;
-    if(c==number){
+    if (c == number) {
       console.log(`[${instance}]`, "Closing browser");
-      await browser.close().catch(e => console.error(`[${instance}]`, e.message));
-    }else{
+      await browser
+        .close()
+        .catch(e => console.error(`[${instance}]`, e.message));
+    } else {
       console.log(`[${instance}]`, "Closing page");
       await page.close().catch(e => console.error(`[${instance}]`, e.message));
     }
@@ -63,7 +65,8 @@ async function goLive(number) {
     .launch({
       headless: false,
       executablePath:
-        "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+        //"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
       //defaultViewport: null,
       //args: ["--no-sandbox"]
     })
