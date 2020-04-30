@@ -9,7 +9,7 @@ async function startLive(browser, instance) {
     const page = await browser
       .newPage()
       .catch(e => console.error(`[${instance}]`, e.message));
-    const url = "https://youtu.be/hjG_IGn5B_8";
+    const url = "https://www.youtube.com/watch?v=Cc9d0jWu7Sk";
     await page
       .goto(url, { waitUntil: "networkidle2", timeout: 60000 })
       .catch(e => console.error(`[${instance}]`, e.message));
@@ -20,11 +20,11 @@ async function startLive(browser, instance) {
     await page
       .waitFor(3000)
       .catch(e => console.error(`[${instance}]`, e.message));
-      await page
-        .screenshot({
-          path: `screenshots/live-${instance}-1.png`
-        })
-        .catch(e => console.error(`[${instance}]`, e.message));
+    await page
+      .screenshot({
+        path: `screenshots/live-${instance}-1.png`
+      })
+      .catch(e => console.error(`[${instance}]`, e.message));
     page.keyboard
       .down("K")
       .catch(e => console.error(`[${instance}]`, e.message));
@@ -34,7 +34,7 @@ async function startLive(browser, instance) {
     await page
       .screenshot({
         path: `screenshots/live-${instance}-2.png`,
-        fullPage : true
+        fullPage: true
       })
       .catch(e => console.error(`[${instance}]`, e.message));
     await page
@@ -82,8 +82,8 @@ async function goLive(number) {
       .launch({
         headless: true,
         executablePath:
-          "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-          //"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+          "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+        //"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
         //defaultViewport: null,
         //args: ["--no-sandbox"]
       })
